@@ -9,6 +9,7 @@
   --grey: rgb(160, 166, 177);
   --light-purple: rgb(163, 142, 205);
   --dark-purple: rgb(133, 98, 204);
+  --yellow: rgb(209, 231, 40);
   --white: rgb(255, 255, 255);
   --black: rgb(0, 0, 0);
   --squareBgColor: rgb(255, 69, 0);
@@ -72,6 +73,10 @@ body {
   border-radius: 50%;
 }
 
+.palette-item:hover {
+  border: 1.5px solid var(--yellow);
+}
+
 .input-user {
   margin: 1rem;
   width: 18rem;
@@ -82,13 +87,6 @@ body {
   width: 100vw;
   height: 100vh;
   margin-top: 4vh;
-}
-
-.loading-text {
-  font-size: 1.6em;
-  font-family: var(--font-heading);
-  color: var(--black);
-  margin: 0 auto;
 }
 
 .canvas {
@@ -110,6 +108,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.loading-text {
+  font-size: 1.6em;
+  font-family: var(--font-heading);
+  color: var(--black);
+  margin: 0 auto;
 }
 
 .square {
