@@ -6,10 +6,12 @@
   --font-body: "Roboto", sans-serif;
 
   /* COLORS */
-  --grey: hsl(217, 10%, 66%);
-  --violet: hsl(260, 39%, 68%);
-  --white: hsl(0, 0%, 100%);
-  --black: hsl(0, 0%, 0%);
+  --grey: rgb(160, 166, 177);
+  --light-purple: rgb(163, 142, 205);
+  --dark-purple: rgb(133, 98, 204);
+  --white: rgb(255, 255, 255);
+  --black: rgb(0, 0, 0);
+  --squareBgColor: rgb(255, 69, 0);
 }
 
 * {
@@ -31,5 +33,47 @@ body {
   font-family: var(--font-body);
   font-weight: 400;
   color: var(--black);
-  background-color: var(--violet);
+  background-color: var(--light-purple);
+  cursor: pointer;
+}
+
+*:focus {
+  outline: none;
+}
+
+.app {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.tools {
+  display: grid;
+  place-items: center;
+  position: sticky;
+  top: 0;
+  padding: 0.6rem;
+  width: 100%;
+  color: var(--black);
+  background-color: var(--dark-purple);
+}
+
+.palette {
+  display: flex;
+  justify-content: center;
+  padding: 0.6rem;
+}
+
+.palette-item {
+  margin: 0.3rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--black);
+  border-radius: 50%;
+}
+
+.input-user {
+  width: 18rem;
+  height: 2.8rem;
 }
