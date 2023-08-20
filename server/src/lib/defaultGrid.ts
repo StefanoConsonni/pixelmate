@@ -36,6 +36,6 @@ const createDefaultGrid = (): Grid => {
 export const getDefaultGrid = (): Grid => {
   // const grid = createDefaultGrid();
 
-  const grid = JSON.parse(fs.readFileSync("./server/src/db/gridTwo.json", "utf-8").toString());
+  const grid = JSON.parse(fs.readFileSync("./server/src/db/grid.json", "utf-8").toString());
   return grid;
 };
