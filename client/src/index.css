@@ -48,6 +48,19 @@ body {
   width: 100vw;
 }
 
+.loading {
+  width: 80vh;
+  height: 80vh;
+  display: grid;
+  place-items: center;
+}
+
+.loading-text {
+  font-size: 1.6em;
+  font-family: var(--font-heading);
+  color: var(--black);
+}
+
 .tools {
   display: grid;
   place-items: center;

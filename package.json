@@ -8,7 +8,7 @@
     "start": "node server/dist/index.js",
     "server": "nodemon server/dist/index.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"nodemon -q server/dist/index.js\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
