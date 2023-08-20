@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useFetch } from "./hooks/useFetch";
 import { colors } from "./utils/colors";
 import { Tools, Square } from "./components";
@@ -33,17 +34,30 @@ function App() {
 
   return (
     <div className="app">
-      <Tools user={user} handleCurrentUser={handleCurrentUser} setCurrentColor={SquareColorize} />
-      <div className="board">
-        <div className="canvas">
-          {isLoading && (
-            <div className="loading">
-              <div className="loading-text">Loading...</div>
+      <TransformWrapper>
+        <Tools
+          user={user}
+          handleCurrentUser={handleCurrentUser}
+          handleColorChange={SquareColorize}
+        />
+        <div className="board">
+          <TransformComponent>
+            <div className="canvas">
+              {isLoading && (
+                <div className="loading-error">
+                  <div className="loading-error-text">Loading...</div>
+                </div>
+              )}
+              {error && (
+                <div className="loading-error">
+                  <div className="loading-error-text">Something went wrong</div>
+                </div>
+              )}
+              {renderGrid}
             </div>
-          )}
-          {renderGrid}
+          </TransformComponent>
         </div>
-      </div>
+      </TransformWrapper>
     </div>
   );
 }

@@ -54,7 +54,7 @@ body {
   place-items: center;
   top: 0;
   padding: 0.6rem;
-  width: 100%;
+  width: 100vw;
   color: var(--black);
   background-color: var(--dark-purple);
 }
@@ -91,15 +91,15 @@ body {
 
 .canvas {
   position: relative;
-  width: 90vh;
-  height: 90vh;
+  width: 80vh;
+  height: 80vh;
   display: grid;
   margin: 0 auto;
   grid-template-columns: repeat(80, 1fr);
   grid-template-rows: repeat(80, 1fr);
 }
 
-.loading {
+.loading-error {
   position: absolute;
   background-color: rgba(182, 192, 182, 0.7);
   width: 100%;
@@ -110,7 +110,7 @@ body {
   justify-content: center;
 }
 
-.loading-text {
+.loading-error-text {
   font-size: 1.6em;
   font-family: var(--font-heading);
   color: var(--black);
