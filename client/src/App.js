@@ -6,6 +6,8 @@ function App() {
   const [currentColor, setCurrentColor] = useState(colors.c1);
   const [user, setUser] = useState("");
 
+  console.log("currentColor", currentColor);
+
   function SquareColorize(color) {
     let r = document.querySelector(":root");
     r.style.setProperty("--squareBgColor", color);
