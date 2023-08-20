@@ -51,7 +51,6 @@ body {
 .tools {
   display: grid;
   place-items: center;
-  position: sticky;
   top: 0;
   padding: 0.6rem;
   width: 100%;
@@ -74,6 +73,7 @@ body {
 }
 
 .input-user {
+  margin: 1rem;
   width: 18rem;
   height: 2.8rem;
 }
@@ -81,14 +81,7 @@ body {
 .board {
   width: 100vw;
   height: 100vh;
-  margin-top: 10vh;
-}
-
-.loading {
-  width: 80vh;
-  height: 80vh;
-  display: grid;
-  margin: 0 auto;
+  margin-top: 4vh;
 }
 
 .loading-text {
@@ -99,12 +92,24 @@ body {
 }
 
 .canvas {
+  position: relative;
   width: 90vh;
   height: 90vh;
   display: grid;
   margin: 0 auto;
   grid-template-columns: repeat(80, 1fr);
   grid-template-rows: repeat(80, 1fr);
+}
+
+.loading {
+  position: absolute;
+  background-color: rgba(182, 192, 182, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .square {
