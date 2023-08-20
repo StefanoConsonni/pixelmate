@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFetch } from "./hooks/useFetch";
-import Tools from "./components/Tools/Tools";
 import { colors } from "./utils/colors";
+import { Tools, Square } from "./components";
 
 function App() {
   const [currentColor, setCurrentColor] = useState(colors.c1);
@@ -11,6 +11,7 @@ function App() {
   console.log("error", error);
   console.log("data", data);
   console.log("currentColor", currentColor);
+  if (data) console.log("Object.entries(data)", Object.entries(data));
 
   function SquareColorize(color) {
     let r = document.querySelector(":root");
@@ -22,19 +23,21 @@ function App() {
     setUser(value);
   }
 
-  if (isLoading) {
-    return (
-      <div className="loading">
-        <div className="loading-text">Loading...</div>
-      </div>
-    );
-  }
-
   return (
     <div className="app">
       <Tools user={user} handleCurrentUser={handleCurrentUser} setCurrentColor={SquareColorize} />
       <div className="board">
-        <div className="canvas"></div>
+        {isLoading && (
+          <div className="loading">
+            <div className="loading-text">Loading...</div>
+          </div>
+        )}
+        <div className="canvas">
+          {data &&
+            Object.entries(data).map((position) => (
+              <Square key={position[0]} position={position[0]} color={position[1].color} />
+            ))}
+        </div>
       </div>
     </div>
   );

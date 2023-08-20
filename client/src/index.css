@@ -5,7 +5,7 @@
   --font-heading: "Press Start 2P", cursive;
   --font-body: "Roboto", sans-serif;
 
-  /* COLORS */
+  /* Colors */
   --grey: rgb(160, 166, 177);
   --light-purple: rgb(163, 142, 205);
   --dark-purple: rgb(133, 98, 204);
@@ -48,19 +48,6 @@ body {
   width: 100vw;
 }
 
-.loading {
-  width: 80vh;
-  height: 80vh;
-  display: grid;
-  place-items: center;
-}
-
-.loading-text {
-  font-size: 1.6em;
-  font-family: var(--font-heading);
-  color: var(--black);
-}
-
 .tools {
   display: grid;
   place-items: center;
@@ -89,4 +76,40 @@ body {
 .input-user {
   width: 18rem;
   height: 2.8rem;
+}
+
+.board {
+  width: 100vw;
+  height: 100vh;
+  margin-top: 10vh;
+}
+
+.loading {
+  width: 80vh;
+  height: 80vh;
+  display: grid;
+  justify-content: center;
+}
+
+.loading-text {
+  font-size: 1.6em;
+  font-family: var(--font-heading);
+  color: var(--black);
+}
+
+.canvas {
+  width: 90vh;
+  height: 90vh;
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(80, 1fr);
+  grid-template-rows: repeat(80, 1fr);
+}
+
+.square {
+  border: 1px solid var(--black);
+}
+
+.square:hover {
+  background-color: var(--squareBgColor) !important;
 }
