@@ -1,4 +1,5 @@
 import { colors } from "../utils/colors";
+import PaletteItem from "./PaletteItem";
 
 function Tools({ currentUser, handleCurrentUser, handleColorChange }) {
   return (
@@ -11,86 +12,22 @@ function Tools({ currentUser, handleCurrentUser, handleColorChange }) {
         onChange={(e) => handleCurrentUser(e.target.value)}
       />
       <div className="palette">
-        <div
-          onClick={() => handleColorChange(colors.c1)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c1 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c2)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c2 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c3)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c3 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c4)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c4 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c5)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c5 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c6)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c6 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c7)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c7 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c8)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c8 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c9)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c9 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c10)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c10 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c11)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c11 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c12)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c12 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c13)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c13 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c14)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c14 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c15)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c15 }}
-        ></div>
-        <div
-          onClick={() => handleColorChange(colors.c16)}
-          className="palette-item"
-          style={{ backgroundColor: colors.c16 }}
-        ></div>
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c1} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c2} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c3} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c4} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c5} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c6} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c7} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c8} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c9} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c10} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c11} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c12} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c13} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c14} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c15} />
+        <PaletteItem handleColorChange={handleColorChange} color={colors.c16} />
       </div>
     </div>
   );

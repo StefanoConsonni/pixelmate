@@ -79,8 +79,8 @@ body {
 
 .palette-item {
   margin: 0.3rem;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.8rem;
+  height: 1.8rem;
   border: 1px solid var(--black);
   border-radius: 50%;
 }
