@@ -6,7 +6,7 @@ function Tools({ currentUser, handleCurrentUser, handleColorChange }) {
       <input
         className="input-user"
         type="text"
-        placeholder="User"
+        placeholder="Username"
         value={currentUser}
         onChange={(e) => handleCurrentUser(e.target.value)}
       />

@@ -1,9 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@300;400;500;700&family=VT323&display=swap");
 
 :root {
   /* Fonts */
-  --font-heading: "Press Start 2P", cursive;
-  --font-body: "Roboto", sans-serif;
+  --font-primary: "Roboto", sans-serif;
+  --font-secondary: "Press Start 2P", cursive;
+  --font-tertiary: "VT323", monospace;
 
   /* Colors */
   --grey: rgb(160, 166, 177);
@@ -32,7 +33,7 @@ html {
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
   font-weight: 400;
   color: var(--black);
   background-color: var(--light-purple);
@@ -56,8 +57,8 @@ body {
   justify-content: center;
   background-color: var(--dark-purple);
   padding-bottom: 1rem;
-  font-family: var(--font-heading);
   font-size: 1.2rem;
+  font-family: var(--font-secondary);
 }
 
 .tools {
@@ -92,6 +93,9 @@ body {
   margin: 1rem;
   width: 18rem;
   height: 2.8rem;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: var(--font-secondary);
 }
 
 .board {
@@ -123,9 +127,13 @@ body {
 
 .loading-error-text {
   font-size: 1.6em;
-  font-family: var(--font-heading);
+  font-family: var(--font-secondary);
   color: var(--black);
   margin: 0 auto;
+}
+
+.tooltip {
+  font-size: 2px;
 }
 
 .square {

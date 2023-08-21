@@ -1,29 +1,45 @@
 import { useRef } from "react";
+import toast from "react-hot-toast";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css"; // optional
+import "tippy.js/dist/tippy.css";
 
-function Square({ coordinate, color, user, currentColor, updateSquare, canChangeColor }) {
+function Square({
+  coordinate,
+  color,
+  user,
+  currentUser,
+  currentColor,
+  updateSquare,
+  canChangeColor,
+}) {
   const divRef = useRef(null);
 
-  const changeBgColor = () => {
+  function changeBgColor() {
     divRef.current.style.backgroundColor = currentColor;
-  };
+    toast.success("Color successfully changed!");
+  }
+
+  function handleClick() {
+    if (currentUser) {
+      if (canChangeColor) {
+        changeBgColor();
+        updateSquare(coordinate, currentColor);
+      }
+    } else {
+      toast.error("Username missing!");
+    }
+  }
 
   return (
     <Tippy
       content={`${coordinate} • ${user || "Unknown"} • ${color}`}
-      placement="bottom"
-      delay={800}
+      className="tooltip"
+      delay={1000}
     >
       <div
         className="square"
         coordinate={coordinate}
-        onClick={() => {
-          if (canChangeColor) {
-            changeBgColor();
-            updateSquare(coordinate, currentColor);
-          }
-        }}
+        onClick={() => handleClick()}
         style={{ backgroundColor: color || "rgb(255, 255, 255)" }}
         ref={divRef}
       ></div>

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import toast, { Toaster } from "react-hot-toast";
+import { Tools, Square, Loading, Error } from "./components";
 import { useFetch } from "./hooks/useFetch";
 import { colors } from "./utils/colors";
-import { Tools, Square, Loading, Error } from "./components";
 
 function App() {
   const { data, isLoading, error } = useFetch("http://localhost:8000/");
@@ -23,7 +24,7 @@ function App() {
 
     const newSquareData = {
       coordinates: coordinate,
-      user: currentUser || "Unknown",
+      user: currentUser,
       color: color,
     };
 
@@ -50,6 +51,7 @@ function App() {
     setTimeout(() => {
       setCanChangeColor(true);
       clearInterval(timer);
+      toast.success("Cooldown finally off!");
     }, 1000 * 5);
   }
 
@@ -125,6 +127,7 @@ function App() {
                       coordinate={square.coordinate}
                       color={square.color}
                       user={square.user}
+                      currentUser={currentUser}
                       currentColor={currentColor}
                       updateSquare={updateSquare}
                       canChangeColor={canChangeColor}
@@ -135,6 +138,18 @@ function App() {
           </TransformComponent>
         </TransformWrapper>
       </div>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            border: "3px solid #d44ddb",
+            borderRadius: "2px",
+            color: "#0a0a0a",
+            padding: "10px",
+            fontSize: "14px",
+          },
+        }}
+      />
     </div>
   );
 }
