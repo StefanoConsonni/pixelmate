@@ -26,7 +26,9 @@ function App() {
     };
 
     fetch("http://localhost:8000/", requestOptions)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+      })
       .catch((err) => {
         throw new Error(err);
       });
