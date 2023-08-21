@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useFetch } from "./hooks/useFetch";
 import { colors } from "./utils/colors";
-import { Tools, Square } from "./components";
+import { Tools, Square, Loading, Error } from "./components";
 
 function App() {
   const { data, isLoading, error } = useFetch("http://localhost:8000/");
@@ -35,7 +36,7 @@ function App() {
     };
 
     fetch("http://localhost:8000/", requestOptions).catch((err) => {
-      throw new Error(err);
+      throw new Loading(err);
     });
 
     // Disable the possibility to change color and start the cooldown
@@ -110,30 +111,29 @@ function App() {
       <div className="cooldown-container">
         <p>Cooldown: {cooldown}</p>
       </div>
-      <div className="board">
-        <div className="canvas">
-          {isLoading && (
-            <div className="loading-error">
-              <div className="loading-error-text">Loading...</div>
+      <div style={{ marginTop: "8px" }}>
+        <TransformWrapper initialScale={1} panning={{ disabled: true }} pinch={{ disabled: true }}>
+          <TransformComponent>
+            <div className="board">
+              <div className="canvas">
+                {isLoading && <Loading />}
+                {error && <Error />}
+                {squaresData &&
+                  squaresData.map((square) => (
+                    <Square
+                      key={square.coordinate}
+                      coordinate={square.coordinate}
+                      color={square.color}
+                      user={square.user}
+                      currentColor={currentColor}
+                      updateSquare={updateSquare}
+                      canChangeColor={canChangeColor}
+                    />
+                  ))}
+              </div>
             </div>
-          )}
-          {error && (
-            <div className="loading-error">
-              <div className="loading-error-text">Something went wrong</div>
-            </div>
-          )}
-          {squaresData &&
-            squaresData.map((square) => (
-              <Square
-                key={square.coordinate}
-                coordinate={square.coordinate}
-                color={square.color}
-                currentColor={currentColor}
-                updateSquare={updateSquare}
-                canChangeColor={canChangeColor}
-              />
-            ))}
-        </div>
+          </TransformComponent>
+        </TransformWrapper>
       </div>
     </div>
   );
