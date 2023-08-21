@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFetch } from "./hooks/useFetch";
 import { colors } from "./utils/colors";
 import { Tools, Square } from "./components";
@@ -6,11 +6,13 @@ import { Tools, Square } from "./components";
 function App() {
   const [currentColor, setCurrentColor] = useState(colors.c1);
   const [currentUser, setCurrentUser] = useState("");
+  const [squaresData, setSquaresData] = useState(null);
+
   const { data, isLoading, error } = useFetch("http://localhost:8000/");
 
-  function updateSquare(coordinates, color) {
+  function updateSquare(coordinate, color) {
     const newSquareData = {
-      coordinates: coordinates,
+      coordinates: coordinate,
       user: "Stefano",
       color: color,
     };
@@ -40,26 +42,26 @@ function App() {
     setCurrentUser(value);
   }
 
-  const renderGrid = useMemo(() => {
-    const squares = [];
+  const getSquaresData = useCallback(() => {
+    const squaresArr = [];
     for (let i = 0; i < 6400; i++) {
       const x = parseInt(i / 80);
       const y = parseInt(i % 80);
       const key = `${x}-${y}`;
       const squareData = (data || {})[key];
 
-      squares.push(
-        <Square
-          key={key}
-          position={key}
-          color={squareData?.color}
-          currentColor={currentColor}
-          updateSquare={updateSquare}
-        />
-      );
+      squaresArr.push({
+        coordinate: key,
+        user: squareData?.user || "",
+        color: squareData?.color || "rgb(255, 255, 255)",
+      });
     }
-    return squares;
+    setSquaresData(squaresArr);
   }, [data]);
+
+  useEffect(() => {
+    getSquaresData();
+  }, [getSquaresData]);
 
   return (
     <div className="app">
@@ -80,7 +82,16 @@ function App() {
               <div className="loading-error-text">Something went wrong</div>
             </div>
           )}
-          {renderGrid}
+          {squaresData &&
+            squaresData.map((square) => (
+              <Square
+                key={square.coordinate}
+                coordinate={square.coordinate}
+                color={square.color}
+                currentColor={currentColor}
+                updateSquare={updateSquare}
+              />
+            ))}
         </div>
       </div>
     </div>

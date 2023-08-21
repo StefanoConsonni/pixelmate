@@ -1,10 +1,10 @@
-function Square({ position, color, currentColor, updateSquare }) {
+function Square({ coordinate, color, currentColor, updateSquare }) {
   return (
     <div
       className="square"
-      position={position}
+      coordinate={coordinate}
       onClick={() => {
-        updateSquare(position, currentColor);
+        updateSquare(coordinate, currentColor);
       }}
       style={{ backgroundColor: color || "white" }}
     ></div>
