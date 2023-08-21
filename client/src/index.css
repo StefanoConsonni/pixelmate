@@ -45,9 +45,19 @@ body {
 
 .app {
   display: grid;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
   width: 100vw;
+}
+
+.cooldown-container {
+  display: flex;
+  justify-content: center;
+  background-color: var(--dark-purple);
+  padding-bottom: 1rem;
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
 }
 
 .tools {

@@ -4,16 +4,25 @@ import { colors } from "./utils/colors";
 import { Tools, Square } from "./components";
 
 function App() {
+  const { data, isLoading, error } = useFetch("http://localhost:8000/");
   const [currentColor, setCurrentColor] = useState(colors.c1);
   const [currentUser, setCurrentUser] = useState("");
   const [squaresData, setSquaresData] = useState(null);
 
-  const { data, isLoading, error } = useFetch("http://localhost:8000/");
+  const [canChangeColor, setCanChangeColor] = useState(true);
+  const [cooldown, setCooldown] = useState(0);
 
   function updateSquare(coordinate, color) {
+    if (!canChangeColor) {
+      return;
+    }
+    // Get the current timestamp and store it in localStorage
+    const currentTime = Date.now();
+    localStorage.setItem("lastSubmitTime", currentTime);
+
     const newSquareData = {
       coordinates: coordinate,
-      user: "Stefano",
+      user: currentUser || "Unknown",
       color: color,
     };
 
@@ -25,13 +34,22 @@ function App() {
       body: JSON.stringify(newSquareData),
     };
 
-    fetch("http://localhost:8000/", requestOptions)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+    fetch("http://localhost:8000/", requestOptions).catch((err) => {
+      throw new Error(err);
+    });
+
+    // Disable the possibility to change color and start the cooldown
+    setCanChangeColor(false);
+    setCooldown(5);
+    // Start the countdown timer
+    const timer = setInterval(() => {
+      setCooldown((prevCooldown) => prevCooldown - 1);
+    }, 1000);
+    // Clear the timer after the cooldown ends
+    setTimeout(() => {
+      setCanChangeColor(true);
+      clearInterval(timer);
+    }, 1000 * 5);
   }
 
   function SquareColorize(color) {
@@ -65,6 +83,23 @@ function App() {
     getSquaresData();
   }, [getSquaresData]);
 
+  useEffect(() => {
+    // Check if there's a previous timestamp in localStorage
+    const lastSubmitTime = localStorage.getItem("lastSubmitTime");
+
+    if (lastSubmitTime) {
+      // Calculate the time elapsed since the last submission
+      const currentTime = Date.now();
+      const timeElapsed = Math.floor((currentTime - parseInt(lastSubmitTime)) / 1000);
+
+      if (timeElapsed < 5) {
+        // If still in cooldown period, don't allow to change color and start the countdown
+        setCanChangeColor(false);
+        setCooldown(5 - timeElapsed);
+      }
+    }
+  }, []);
+
   return (
     <div className="app">
       <Tools
@@ -72,6 +107,9 @@ function App() {
         handleCurrentUser={handleCurrentUser}
         handleColorChange={SquareColorize}
       />
+      <div className="cooldown-container">
+        <p>Cooldown: {cooldown}</p>
+      </div>
       <div className="board">
         <div className="canvas">
           {isLoading && (
@@ -92,6 +130,7 @@ function App() {
                 color={square.color}
                 currentColor={currentColor}
                 updateSquare={updateSquare}
+                canChangeColor={canChangeColor}
               />
             ))}
         </div>

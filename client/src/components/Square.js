@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-function Square({ coordinate, color, currentColor, updateSquare }) {
+function Square({ coordinate, color, currentColor, updateSquare, canChangeColor }) {
   const divRef = useRef(null);
 
   const changeBgColor = () => {
@@ -12,8 +12,10 @@ function Square({ coordinate, color, currentColor, updateSquare }) {
       className="square"
       coordinate={coordinate}
       onClick={() => {
-        changeBgColor();
-        updateSquare(coordinate, currentColor);
+        if (canChangeColor) {
+          changeBgColor();
+          updateSquare(coordinate, currentColor);
+        }
       }}
       style={{ backgroundColor: color || "rgb(255, 255, 255)" }}
       ref={divRef}
