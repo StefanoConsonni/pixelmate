@@ -1,13 +1,13 @@
 import { colors } from "../utils/colors";
 
-function Tools({ user, handleCurrentUser, handleColorChange }) {
+function Tools({ currentUser, handleCurrentUser, handleColorChange }) {
   return (
     <div className="tools">
       <input
         className="input-user"
         type="text"
         placeholder="User"
-        value={user}
+        value={currentUser}
         onChange={(e) => handleCurrentUser(e.target.value)}
       />
       <div className="palette">

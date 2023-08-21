@@ -5,17 +5,39 @@ import { Tools, Square } from "./components";
 
 function App() {
   const [currentColor, setCurrentColor] = useState(colors.c1);
-  const [user, setUser] = useState("");
+  const [currentUser, setCurrentUser] = useState("");
   const { data, isLoading, error } = useFetch("http://localhost:8000/");
 
+  function updateSquare(coordinates, color) {
+    const newSquareData = {
+      coordinates: coordinates,
+      user: "Stefano",
+      color: color,
+    };
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newSquareData),
+    };
+
+    fetch("http://localhost:8000/", requestOptions)
+      .then((res) => console.log(res))
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
   function SquareColorize(color) {
+    setCurrentColor(color);
     let r = document.querySelector(":root");
     r.style.setProperty("--squareBgColor", color);
-    setCurrentColor(color);
   }
 
   function handleCurrentUser(value) {
-    setUser(value);
+    setCurrentUser(value);
   }
 
   const renderGrid = useMemo(() => {
@@ -26,14 +48,26 @@ function App() {
       const key = `${x}-${y}`;
       const squareData = (data || {})[key];
 
-      squares.push(<Square key={key} position={key} color={squareData?.color} />);
+      squares.push(
+        <Square
+          key={key}
+          position={key}
+          color={squareData?.color}
+          currentColor={currentColor}
+          updateSquare={updateSquare}
+        />
+      );
     }
     return squares;
   }, [data]);
 
   return (
     <div className="app">
-      <Tools user={user} handleCurrentUser={handleCurrentUser} handleColorChange={SquareColorize} />
+      <Tools
+        currentUser={currentUser}
+        handleCurrentUser={handleCurrentUser}
+        handleColorChange={SquareColorize}
+      />
       <div className="board">
         <div className="canvas">
           {isLoading && (

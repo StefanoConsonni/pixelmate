@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
   c1: "rgb(255, 69, 0)",
   c2: "rgb(255, 168, 0)",
   c3: "rgb(255, 214, 53)",
@@ -16,5 +16,3 @@ const colors = {
   c15: "rgb(212, 215, 217)",
   c16: "rgb(255, 255, 255)",
 };
-
-export { colors };
