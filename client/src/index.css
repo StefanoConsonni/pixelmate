@@ -14,7 +14,10 @@
   --pink-fluo: rgb(206, 49, 206);
   --white: rgb(255, 255, 255);
   --black: rgb(0, 0, 0);
-  --squareBgColor: rgb(255, 69, 0);
+
+  /* Misc */
+  --square-bg-color: rgb(255, 69, 0);
+  --grid-size: 100;
 }
 
 * {
@@ -98,6 +101,10 @@ body {
   font-family: var(--font-secondary);
 }
 
+.board-container {
+  margin-top: 8px;
+}
+
 .board {
   width: 100vw;
   height: 100vh;
@@ -110,8 +117,8 @@ body {
   height: 80vh;
   display: grid;
   margin: 0 auto;
-  grid-template-columns: repeat(80, 1fr);
-  grid-template-rows: repeat(80, 1fr);
+  grid-template-columns: repeat(var(--grid-size), 1fr);
+  grid-template-rows: repeat(var(--grid-size), 1fr);
 }
 
 .loading-error {
@@ -132,14 +139,10 @@ body {
   margin: 0 auto;
 }
 
-.tooltip {
-  font-size: 2px;
-}
-
 .square {
   border: 1px solid var(--black);
 }
 
 .square:hover {
-  background-color: var(--squareBgColor) !important;
+  background-color: var(--square-bg-color) !important;
 }

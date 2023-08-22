@@ -1,50 +1,29 @@
-import { useRef } from "react";
-import toast from "react-hot-toast";
+import React from "react";
+import { useCallback } from "react";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 
-function Square({
-  coordinate,
-  color,
-  user,
-  currentUser,
-  currentColor,
-  updateSquare,
-  canChangeColor,
-}) {
-  const divRef = useRef(null);
-
-  function changeBgColor() {
-    divRef.current.style.backgroundColor = currentColor;
-    toast.success("Color successfully changed!");
-  }
-
-  function handleClick() {
-    if (currentUser) {
-      if (canChangeColor) {
-        changeBgColor();
-        updateSquare(coordinate, currentColor);
-      }
-    } else {
-      toast.error("Username missing!");
-    }
-  }
+function Square({ square, handleClick }) {
+  const onClick = useCallback(
+    (e) => {
+      handleClick(e, square);
+    },
+    [handleClick, square]
+  );
 
   return (
     <Tippy
-      content={`${coordinate} • ${user || "Unknown"} • ${color}`}
-      className="tooltip"
+      content={`${square.coordinate} • ${square.user || "Unknown"} • ${square.color}`}
       delay={1000}
     >
       <div
         className="square"
-        coordinate={coordinate}
-        onClick={() => handleClick()}
-        style={{ backgroundColor: color || "rgb(255, 255, 255)" }}
-        ref={divRef}
+        coordinate={square.coordinate}
+        onClick={onClick}
+        style={{ backgroundColor: square.color || "rgb(255, 255, 255)" }}
       ></div>
     </Tippy>
   );
 }
 
-export default Square;
+export default React.memo(Square);

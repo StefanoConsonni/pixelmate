@@ -1,23 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import toast, { Toaster } from "react-hot-toast";
-import { Tools, Square, Loading, Error } from "./components";
-import { useFetch } from "./hooks/useFetch";
+import { Tools, Square, Loading, ErrorComponent } from "./components";
+import { useFetch, useCooldown } from "./hooks";
+import { API, GRID_SIZE } from "./utils/constants";
 import { colors } from "./utils/colors";
 
+let currentUser = "";
+let currentColor = colors.c1;
+
 function App() {
-  const { data, isLoading, error } = useFetch("http://localhost:8000/");
-  const [currentColor, setCurrentColor] = useState(colors.c1);
-  const [currentUser, setCurrentUser] = useState("");
-  const [squaresData, setSquaresData] = useState(null);
+  const { data, isLoading, error } = useFetch(API.MAIN_URL);
+  const { canChangeColor, cooldown, startCooldown } = useCooldown();
 
-  const [canChangeColor, setCanChangeColor] = useState(true);
-  const [cooldown, setCooldown] = useState(0);
-
-  function updateSquare(coordinate, color) {
-    if (!canChangeColor) {
-      return;
-    }
+  const updateSquare = useCallback((coordinate, color) => {
     // Get the current timestamp and store it in localStorage
     const currentTime = Date.now();
     localStorage.setItem("lastSubmitTime", currentTime);
@@ -36,40 +32,24 @@ function App() {
       body: JSON.stringify(newSquareData),
     };
 
-    fetch("http://localhost:8000/", requestOptions).catch((err) => {
-      throw new Loading(err);
-    });
+    return fetch(API.MAIN_URL, requestOptions);
+  }, []);
 
-    // Disable the possibility to change color and start the cooldown
-    setCanChangeColor(false);
-    setCooldown(5);
-    // Start the countdown timer
-    const timer = setInterval(() => {
-      setCooldown((prevCooldown) => prevCooldown - 1);
-    }, 1000);
-    // Clear the timer after the cooldown ends
-    setTimeout(() => {
-      setCanChangeColor(true);
-      clearInterval(timer);
-      toast.success("Cooldown finally off!");
-    }, 1000 * 5);
-  }
-
-  function SquareColorize(color) {
-    setCurrentColor(color);
+  const squareColorize = useCallback((color) => {
+    currentColor = color;
     let r = document.querySelector(":root");
     r.style.setProperty("--squareBgColor", color);
-  }
+  }, []);
 
-  function handleCurrentUser(value) {
-    setCurrentUser(value);
-  }
+  const handleCurrentUserChange = useCallback((value) => {
+    currentUser = value;
+  }, []);
 
-  const getSquaresData = useCallback(() => {
+  const squaresData = useMemo(() => {
     const squaresArr = [];
-    for (let i = 0; i < 6400; i++) {
-      const x = parseInt(i / 80);
-      const y = parseInt(i % 80);
+    for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+      const x = parseInt(i / GRID_SIZE);
+      const y = parseInt(i % GRID_SIZE);
       const key = `${x}-${y}`;
       const squareData = (data || {})[key];
 
@@ -79,60 +59,47 @@ function App() {
         color: squareData?.color || "rgb(255, 255, 255)",
       });
     }
-    setSquaresData(squaresArr);
+    return squaresArr;
   }, [data]);
 
-  useEffect(() => {
-    getSquaresData();
-  }, [getSquaresData]);
-
-  useEffect(() => {
-    // Check if there's a previous timestamp in localStorage
-    const lastSubmitTime = localStorage.getItem("lastSubmitTime");
-
-    if (lastSubmitTime) {
-      // Calculate the time elapsed since the last submission
-      const currentTime = Date.now();
-      const timeElapsed = Math.floor((currentTime - parseInt(lastSubmitTime)) / 1000);
-
-      if (timeElapsed < 5) {
-        // If still in cooldown period, don't allow to change color and start the countdown
-        setCanChangeColor(false);
-        setCooldown(5 - timeElapsed);
+  const handleSquareClick = useCallback(
+    (e, square) => {
+      if (currentUser) {
+        if (canChangeColor) {
+          updateSquare(square.coordinate, currentColor)
+            .then((resp) => {
+              square.color = currentColor;
+              square.user = currentUser;
+              startCooldown();
+              toast.success("Color successfully changed!");
+            })
+            .catch((err) => {
+              throw new Error(err);
+            });
+        }
+      } else {
+        toast.error("Username missing!");
       }
-    }
-  }, []);
+    },
+    [canChangeColor, startCooldown, updateSquare]
+  );
 
   return (
     <div className="app">
-      <Tools
-        currentUser={currentUser}
-        handleCurrentUser={handleCurrentUser}
-        handleColorChange={SquareColorize}
-      />
+      <Tools handleCurrentUser={handleCurrentUserChange} handleColorChange={squareColorize} />
       <div className="cooldown-container">
         <p>Cooldown: {cooldown}</p>
       </div>
-      <div style={{ marginTop: "8px" }}>
+      <div className="board-container">
         <TransformWrapper initialScale={1} panning={{ disabled: true }} pinch={{ disabled: true }}>
           <TransformComponent>
             <div className="board">
               <div className="canvas">
                 {isLoading && <Loading />}
-                {error && <Error />}
-                {squaresData &&
-                  squaresData.map((square) => (
-                    <Square
-                      key={square.coordinate}
-                      coordinate={square.coordinate}
-                      color={square.color}
-                      user={square.user}
-                      currentUser={currentUser}
-                      currentColor={currentColor}
-                      updateSquare={updateSquare}
-                      canChangeColor={canChangeColor}
-                    />
-                  ))}
+                {error && <ErrorComponent />}
+                {(squaresData || []).map((square) => (
+                  <Square key={square.coordinate} square={square} handleClick={handleSquareClick} />
+                ))}
               </div>
             </div>
           </TransformComponent>
